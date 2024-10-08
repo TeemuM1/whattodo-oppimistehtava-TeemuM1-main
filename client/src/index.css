@@ -21,13 +21,15 @@ body {
 }
 
 .header {
+  background-color: #333;
   color: rgb(255, 255, 255);
   display: flex;
   align-items: center;
   flex-direction: column;
   flex-grow: 1;
-  padding: 0 20px 0 20px;
+  padding: 20px;
   margin: 20px 0px;
+  text-align: center;
   h1 {
     color:  rgb(255, 255, 250);
   }
@@ -36,12 +38,6 @@ body {
 button {
   background-color: rgba(92, 89, 82, 1);
   color: rgb(238, 237, 236);
-}
-
-.header {
-  background-color: #333; 
-  padding: 20px;
-  text-align: center;
 }
 
 .header h1 {
@@ -103,4 +99,11 @@ ul {
 
 .deleteButton {
   margin-left: 10px;
+}
+
+.Error {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  color: black;
 }
