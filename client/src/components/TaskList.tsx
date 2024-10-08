@@ -36,7 +36,7 @@ export default function TaskList({taskList, onDeleteTask, onAddTask}: TaskListPr
         <ul>
           {taskList.map((task, index) => (
             <li key={index}>{task}
-            <button onClick={() => onDeleteTask(task)}>
+            <button className="deleteButton" onClick={() => onDeleteTask(task)}>
               Delete
               </button>
             </li>
