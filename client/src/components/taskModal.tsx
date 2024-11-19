@@ -74,7 +74,6 @@ const TaskModal: React.FC<TaskModalProps> = ({
             className="bg-white rounded-lg shadow-lg w-full max-w-md p-6"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Header */}
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">
                 {mode === "create" ? "Create Task" : "Edit Task"}
@@ -86,8 +85,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
                 ✕
               </button>
             </div>
-    
-            {/* Form */}
+  
             <form onSubmit={handleSubmit}>
               <div className="form-control mb-4">
                 <label className="label">

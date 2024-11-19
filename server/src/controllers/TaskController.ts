@@ -50,13 +50,11 @@ export const editTask = async (req: Request, res: Response) => {
   const { originalName, ...updatedData } = req.body;
 
   try {
-      // Find the task by its original name
       const task = await Task.findOne({ name: originalName });
       if (!task) {
           return res.status(404).json({ message: "Task not found" });
       }
 
-      // Update the task with the new data
       Object.assign(task, updatedData);
       await task.save();
 
