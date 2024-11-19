@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import { createTask } from "../services/apiService";
-import { Task } from "../models/TaskModels";
+import { Task, TaskStatusEnum } from "../models/TaskModels";
 
-function CreateTask() {
+interface CreateTaskProps {
+  onTaskCreated: (newTask: Task) => void;
+}
+
+function CreateTask({ onTaskCreated }: CreateTaskProps) {
   const [name, setName] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+  const [status, setStatus] = useState<TaskStatusEnum>(TaskStatusEnum.NEW);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,14 +23,17 @@ function CreateTask() {
         content,
         startDate: new Date(startDate),
         endDate: new Date(endDate),
+        status,
       };
       await createTask(newTask);
+      onTaskCreated(newTask);
       setMessage("Task created successfully");
       setName("");
       setContent("");
       setStartDate("");
       setEndDate("");
-    } catch (error) {
+      setStatus(TaskStatusEnum.NEW);
+    } catch {
       setMessage("Failed to create task");
     }
   };
@@ -84,6 +92,22 @@ function CreateTask() {
             required
             className="input input-bordered w-full"
           />
+        </div>
+        <div className="form-control mb-6">
+          <label className="label">
+            <span className="label-text">Status:</span>
+          </label>
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value as TaskStatusEnum)}
+            className="select select-bordered w-full"
+          >
+            {Object.values(TaskStatusEnum).map((statusOption) => (
+              <option key={statusOption} value={statusOption}>
+                {statusOption.charAt(0).toUpperCase() + statusOption.slice(1)}
+              </option>
+            ))}
+          </select>
         </div>
         <button type="submit" className="btn btn-primary w-full">
           Create Task

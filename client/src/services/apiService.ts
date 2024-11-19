@@ -6,7 +6,7 @@ const apiClient = axios.create({
   timeout: 5000, 
 });
 
-export async function getTasks() {
+export async function getTasks(): Promise<Task[]> {
   try {
     const response: AxiosResponse = await apiClient.get("/tasks");
     return response.data;
@@ -25,3 +25,23 @@ export async function createTask(newTask: Task) {
     throw new Error(`Error creating task: ${err.response?.data}`);
   }
 }
+
+export const deleteTask = async (taskName: string) => {
+  const url = `/tasks/${encodeURIComponent(taskName)}`;
+  const response = await apiClient.delete(url);
+  return response.data;
+};
+
+export const editTask = async (originalName: string, task: Task): Promise<Task> => {
+  try {
+    const response: AxiosResponse = await apiClient.put(`/tasks/${encodeURIComponent(originalName)}`, {
+      originalName,
+      ...task,
+    });
+    return response.data.task;
+  } catch (error) {
+    const err = error as AxiosError;
+    console.error('Error updating task:', err);
+    throw new Error(`Error updating task: ${err.response?.data}`);
+  }
+};
