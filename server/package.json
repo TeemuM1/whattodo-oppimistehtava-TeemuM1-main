@@ -21,6 +21,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/mongoose": "^5.11.96",
+    "@types/node": "^22.9.1",
     "cors": "^2.8.5"
   }
 }

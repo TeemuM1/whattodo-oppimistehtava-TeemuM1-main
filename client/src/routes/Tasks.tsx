@@ -87,21 +87,26 @@ export default function Tasks() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
-            <div className="card w-full max-w-3xl bg-base-100 shadow-xl">
-                <div className="card-body">
-                    <h2 className="card-title text-4xl font-bold text-gray-800 mb-6">Tasks</h2>
-                    <div className="flex justify-between mb-6">
-                        <button onClick={handleOpenCreateModal} className="btn btn-primary">
-                            + Create Task
-                        </button>
-                        {notification && (
-                            <Notification
-                                message={notification.message}
-                                type={notification.type}
-                                onClose={() => setNotification(null)}
-                            />
-                        )}
-                    </div>
+      <div className="card w-full max-w-5xl bg-base-100 shadow-xl">
+        <div className="card-body">
+          <h2 className="card-title text-4xl font-bold text-gray-800 mb-6">
+            Tasks
+          </h2>
+          <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
+            <button
+              onClick={handleOpenCreateModal}
+              className="btn btn-primary"
+            >
+              + Create Task
+            </button>
+            {notification && (
+              <Notification
+                message={notification.message}
+                type={notification.type}
+                onClose={() => setNotification(null)}
+              />
+            )}
+          </div>
                     {error && (
                         <div className="alert alert-error shadow-lg mb-4">
                             <div>
@@ -132,7 +137,6 @@ export default function Tasks() {
                                 taskList={taskList}
                                 onDeleteTask={handleDeleteTask}
                                 onEditTask={handleOpenEditModal}
-                                onCreateTask={handleSubmitTask}
                             />
                         </div>
                     )}
