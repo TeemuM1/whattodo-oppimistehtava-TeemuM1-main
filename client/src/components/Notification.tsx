@@ -11,7 +11,7 @@ export default function Notification({ message, type, onClose }: NotificationPro
         const timer = setTimeout(() => {
             onClose();
         }, 3000);
-
+        
         return () => clearTimeout(timer);
     }, [onClose]);
 
