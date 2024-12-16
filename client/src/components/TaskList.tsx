@@ -10,12 +10,13 @@ interface TaskListProps {
 const TasksList = ({ taskList, onDeleteTask, onEditTask }: TaskListProps) => {
   const tasksPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
-
+  
   const totalPages = Math.ceil(taskList.length / tasksPerPage);
 
   const currentTasks = taskList.slice(
     (currentPage - 1) * tasksPerPage,
     currentPage * tasksPerPage
+  
   );
 
   const getBadgeClass = (status: TaskStatusEnum): string => {
@@ -31,6 +32,7 @@ const TasksList = ({ taskList, onDeleteTask, onEditTask }: TaskListProps) => {
     }
   };
 
+  
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -59,6 +61,13 @@ const TasksList = ({ taskList, onDeleteTask, onEditTask }: TaskListProps) => {
               >
                 {task.status.charAt(0).toUpperCase() + task.status.slice(1)}
               </span>
+              {task.category && (
+                <span className="badge badge-secondary ml-2">
+                  {typeof task.category === 'object' && 'name' in task.category
+                    ? task.category.name
+                    : '' }  
+                </span>
+              )}
             </div>
             <div className="mb-6">
               <h3 className="text-3xl font-extrabold text-gray-800 text-center mb-2">
@@ -116,3 +125,5 @@ const TasksList = ({ taskList, onDeleteTask, onEditTask }: TaskListProps) => {
 };
 
 export default TasksList;
+
+

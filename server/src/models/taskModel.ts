@@ -14,6 +14,7 @@ export interface ITask extends Document {
     startDate: Date,
     endDate: Date,
     status: TaskStatusEnum
+    category: mongoose.Schema.Types.ObjectId;
 }
 
 const taskSchema: Schema = new Schema(
@@ -38,6 +39,11 @@ const taskSchema: Schema = new Schema(
         type: String,
         enum: Object.values(TaskStatusEnum),
         default: TaskStatusEnum.NEW,
+      },
+      category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+        require: false
       },
     },
     {

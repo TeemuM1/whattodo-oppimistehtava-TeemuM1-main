@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { createTask } from "../services/apiService";
-import { Task, TaskStatusEnum } from "../models/TaskModels";
+import React, { useState, useEffect } from "react";
+import { createTask, getCategories } from "../services/apiService";
+import { Task, TaskStatusEnum, Category } from "../models/TaskModels";
 
 interface CreateTaskProps {
   onTaskCreated: (newTask: Task) => void;
@@ -11,32 +11,57 @@ function CreateTask({ onTaskCreated }: CreateTaskProps) {
   const [content, setContent] = useState<string>("");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
   const [status, setStatus] = useState<TaskStatusEnum>(TaskStatusEnum.NEW);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>(""); // Store selected category ID
+  const [message, setMessage] = useState<string>("");
+
+  // Fetch categories when the component mounts
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const categoryData = await getCategories();
+        setCategories(categoryData);
+      } catch {
+        setMessage("Failed to load categories");
+      }
+    }
+    fetchCategories();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      const newTask: Task = {
+  
+    const selectedCategoryObject = selectedCategory
+        ? categories.find((cat) => cat._id === selectedCategory) || null
+        : null;
+
+    const newTask: Task = {
         name,
         content,
         startDate: new Date(startDate),
         endDate: new Date(endDate),
         status,
-      };
-      await createTask(newTask);
-      onTaskCreated(newTask);
-      setMessage("Task created successfully");
-      setName("");
-      setContent("");
-      setStartDate("");
-      setEndDate("");
-      setStatus(TaskStatusEnum.NEW);
-    } catch {
-      setMessage("Failed to create task");
+        category: selectedCategoryObject?._id || null 
+    };
+
+    try {
+        const createdTask = await createTask(newTask);
+        onTaskCreated(createdTask);
+        setMessage('Task created successfully');
+        setName('');
+        setContent('');
+        setStartDate('');
+        setEndDate('');
+        setStatus(TaskStatusEnum.NEW);
+        setSelectedCategory('');
+    } catch (error) {
+        console.error(error);
+        setMessage('Failed to create task');
     }
-  };
+};
+
 
   return (
     <div className="flex flex-col my-8 p-6 bg-white shadow-lg rounded-lg">
@@ -81,7 +106,7 @@ function CreateTask({ onTaskCreated }: CreateTaskProps) {
             className="input input-bordered w-full"
           />
         </div>
-        <div className="form-control mb-6">
+        <div className="form-control mb-4">
           <label className="label">
             <span className="label-text">End Date:</span>
           </label>
@@ -95,20 +120,22 @@ function CreateTask({ onTaskCreated }: CreateTaskProps) {
         </div>
         <div className="form-control mb-6">
           <label className="label">
-            <span className="label-text">Status:</span>
+            <span className="label-text">Category:</span>
           </label>
           <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value as TaskStatusEnum)}
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
             className="select select-bordered w-full"
           >
-            {Object.values(TaskStatusEnum).map((statusOption) => (
-              <option key={statusOption} value={statusOption}>
-                {statusOption.charAt(0).toUpperCase() + statusOption.slice(1)}
-              </option>
-            ))}
-          </select>
-        </div>
+            <option value="">None</option>
+              {categories.map((category) => (
+                <option key={category._id} value={category._id}>
+                  {category.name}
+            </option>
+         ))}
+        </select>
+      </div>
+
         <button type="submit" className="btn btn-primary w-full">
           Create Task
         </button>
