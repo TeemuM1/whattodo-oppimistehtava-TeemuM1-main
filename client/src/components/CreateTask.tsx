@@ -13,10 +13,9 @@ function CreateTask({ onTaskCreated }: CreateTaskProps) {
   const [endDate, setEndDate] = useState<string>("");
   const [status, setStatus] = useState<TaskStatusEnum>(TaskStatusEnum.NEW);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>(""); // Store selected category ID
+  const [selectedCategory, setSelectedCategory] = useState<string>(""); 
   const [message, setMessage] = useState<string>("");
 
-  // Fetch categories when the component mounts
   useEffect(() => {
     async function fetchCategories() {
       try {

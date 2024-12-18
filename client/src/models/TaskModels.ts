@@ -19,7 +19,7 @@ export type Task = {
     startDate?: Date | null;
     endDate?: Date | null;
     status: TaskStatusEnum;
-    category?: string | Category | null; // Added category property
+    category?: string | Category | null;
     originalName?: string;
 };
 

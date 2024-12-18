@@ -102,7 +102,6 @@ export default function Tasks() {
           ...task,
           category: typeof task.category === "object" ? task.category?._id : task.category,
         };
-        console.log("Payload sent to editTask API:", taskToSubmit);
     
         if (modalMode === 'create') {
           const newTask = await createTask(taskToSubmit);
